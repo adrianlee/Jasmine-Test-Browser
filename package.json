@@ -1,0 +1,11 @@
+{
+  "name": "Jasmine-test",
+  "version": "0.0.1",
+  "description": "Test",
+  "repository": "",
+  "dependencies": {
+    "express": "2.5.8",
+    "jasmine-node": "1.0.22",
+    "jade": "0.21.0"
+  }
+}
