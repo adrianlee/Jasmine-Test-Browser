@@ -20,8 +20,15 @@ app.get('/run', function(req, res) {
 });
 
 app.get('/run/:job', function(req, res) {
-    job.run(req.params.job);
-    res.send(req.params.job);
+    job.run(req.params.job, function (err) {
+        if (err) {
+            console.log('Something went wrong!');
+            res.send(err);
+        } else {
+            res.send(req.params.job);
+        }
+    });
+    
 });
 
 app.listen(3000);
