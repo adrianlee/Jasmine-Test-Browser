@@ -5,7 +5,7 @@ var http = require('http'),
   
 app.configure(function() {
     app.use(express.bodyParser())
-    app.use(express.static(__dirname + '/workspace/public'))
+    app.use(express.static(__dirname + '/public'))
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true}))
 });
 
@@ -16,7 +16,7 @@ app.get('/', function(req, res) {
 
 app.get('/run', function(req, res) {
     // generate index html file and inject the jasmine specs into <head>
-    res.sendfile(__dirname + '/workspace/public/index.html');
+    res.sendfile(__dirname + '/public/index.html');
 });
 
 app.get('/run/:job', function(req, res) {
