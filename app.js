@@ -28,7 +28,6 @@ app.get('/run/:job', function(req, res) {
             res.send(req.params.job);
         }
     });
-    
 });
 
 app.listen(3000);
