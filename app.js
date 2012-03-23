@@ -22,7 +22,7 @@ app.get('/run', function(req, res) {
 });
 
 app.get('/run/:job', function(req, res) {
-    req.connection.setTimeout(1000);
+    // req.connection.setTimeout(1000);
     job.run(req.params.job, function (err) {
         if (err) {
             console.log('ERROR: ' + err);
@@ -30,7 +30,7 @@ app.get('/run/:job', function(req, res) {
         } else {
             eventEmitter.on('results', function(message){
                 console.log(message);
-                res.send(message);;
+                res.send(message);
             })
             //res.send(req.params.job);
         }
@@ -40,10 +40,11 @@ app.get('/run/:job', function(req, res) {
 app.post('/results', function(req, res) {
     console.log(req.body);
     if (req.body) {
-        res.send('OK');
+        console.log(req);
         // pass results as response to /run/:job request
         // emit event
-        eventEmitter.emit('results', 'Something happened!');
+        eventEmitter.emit('results', req.body);
+        res.send('OK');
     }
 });
 
