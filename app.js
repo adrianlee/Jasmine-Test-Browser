@@ -1,5 +1,7 @@
 var http = require('http'),
     express = require('express'),
+    events = require('events'),
+    eventEmitter = new events.EventEmitter();
     app = express.createServer(),
     job = require('./lib/job');
   
@@ -9,7 +11,7 @@ app.configure(function() {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true}))
 });
 
-app.get('/', function(req, res) {
+app.get('/hi', function(req, res) {
     // res.sendfile(__dirname + '/public/index.html');
     res.send("GET: /run/:job<br>GET: /run");
 });
@@ -20,14 +22,29 @@ app.get('/run', function(req, res) {
 });
 
 app.get('/run/:job', function(req, res) {
+    req.connection.setTimeout(1000);
     job.run(req.params.job, function (err) {
         if (err) {
-            console.log('Something went wrong!');
+            console.log('ERROR: ' + err);
             res.send(err);
         } else {
-            res.send(req.params.job);
+            eventEmitter.on('results', function(message){
+                console.log(message);
+                res.send(message);;
+            })
+            //res.send(req.params.job);
         }
     });
+});
+
+app.post('/results', function(req, res) {
+    console.log(req.body);
+    if (req.body) {
+        res.send('OK');
+        // pass results as response to /run/:job request
+        // emit event
+        eventEmitter.emit('results', 'Something happened!');
+    }
 });
 
 app.listen(3000);
