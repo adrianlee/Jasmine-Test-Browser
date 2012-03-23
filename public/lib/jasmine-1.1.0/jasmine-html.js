@@ -89,6 +89,7 @@ jasmine.TrivialReporter.prototype.reportRunnerStarting = function(runner) {
 
 jasmine.TrivialReporter.prototype.reportRunnerResults = function(runner) {
   var results = runner.results();
+  //console.log(results);
   var className = (results.failedCount > 0) ? "runner failed" : "runner passed";
   this.runnerDiv.setAttribute("class", className);
   //do it twice for IE
@@ -105,7 +106,19 @@ jasmine.TrivialReporter.prototype.reportRunnerResults = function(runner) {
   this.runnerMessageSpan.replaceChild(this.createDom('a', { className: 'description', href: '?'}, message), this.runnerMessageSpan.firstChild);
 
   this.finishedAtSpan.appendChild(document.createTextNode("Finished at " + new Date().toString()));
+
+  
+
+  setTimeout("omg()", 3000);
 };
+
+function omg() {
+  var send_results = new XMLHttpRequest();
+  send_results.open("POST", "http://10.137.40.49:3000/results", true);
+  send_results.setRequestHeader("Content-Type", "text/xml");
+  send_results.send(this.document.body);
+  console.log(this.document.body);
+}
 
 jasmine.TrivialReporter.prototype.reportSuiteResults = function(suite) {
   var results = suite.results();
